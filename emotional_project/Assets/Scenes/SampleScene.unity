@@ -256,12 +256,12 @@ GameObject:
   - component: {fileID: 172805149}
   - component: {fileID: 172805148}
   - component: {fileID: 172805150}
-  m_Layer: 6
+  m_Layer: 3
   m_Name: Tilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &172805147
 Transform:
@@ -2712,8 +2712,8 @@ GameObject:
   m_Component:
   - component: {fileID: 602132223}
   - component: {fileID: 602132222}
-  - component: {fileID: 602132226}
   - component: {fileID: 602132227}
+  - component: {fileID: 602132226}
   m_Layer: 6
   m_Name: character_2_full
   m_TagString: Player
@@ -2809,7 +2809,7 @@ MonoBehaviour:
   groundDistance: 0.1
   groundMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 72
 --- !u!143 &602132227
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3197,8 +3197,8 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 602132223}
   - {fileID: 619394802}
-  - {fileID: 634848}
-  - {fileID: 762522979}
   - {fileID: 1444707377}
+  - {fileID: 762522979}
+  - {fileID: 634848}
+  - {fileID: 602132223}
