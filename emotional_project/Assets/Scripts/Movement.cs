@@ -1,63 +1,46 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f;           // Speed of the character
-    public float jumpHeight = 2f;          // Height of the jump
-    public float gravity = -9.81f;          // Gravity value (negative for downward force)
-    public Transform groundCheck;           // Transform to check if character is grounded
-    public float groundDistance = 0.1f;     // Distance for ground checking
-    public LayerMask groundMask;            // LayerMask to define what is considered ground
+    public float speed = 5f; // Speed of the character
+    public float jumpForce = 5f; // Force applied when the character jumps
 
-    private CharacterController characterController;
-    private Vector3 velocity;               // Current velocity of the character
-    private bool isGrounded;                // Indicates if the character is on the ground
+    private Rigidbody2D rb; // Reference to the Rigidbody2D component
+    private bool isGrounded; // Check if the character is on the ground
 
-    private void Start()
+    public Transform groundCheck; // Reference point to check if grounded
+    public LayerMask groundLayer; // Layer mask for ground detection
+
+    void Start()
     {
-        // Get the CharacterController component attached to the character
-        characterController = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody2D>(); // Get the Rigidbody2D component
     }
 
-    private void Update()
+    void Update()
+    {
+        Move(); // Call Move method for player movement
+        Jump(); // Call Jump method for player jump
+    }
+
+    private void Move()
+    {
+        float moveInput = Input.GetAxis("Horizontal"); // Use Unity's built-in Horizontal axis
+        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y); // Set the horizontal velocity
+    }
+
+    private void Jump()
     {
         // Check if the character is grounded
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
 
-        if (isGrounded && velocity.y < 0)
+        // If the player is grounded and presses the Spacebar, jump
+        if (isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
-            velocity.y = -2f; // Keep the character on the ground
-        }
-
-        // Get input from the Horizontal and Vertical axis
-        float moveX = Input.GetAxis("Horizontal"); // A/D or Left/Right Arrow
-        float moveZ = Input.GetAxis("Vertical");   // W/S or Up/Down Arrow
-
-        // Create a movement vector based on input
-        Vector3 move = transform.right * moveX + transform.forward * moveZ;
-
-        // Move the character
-        characterController.Move(move * moveSpeed * Time.deltaTime);
-
-        // Jumping mechanic
-        if (isGrounded && Input.GetButtonDown("Jump")) // Spacebar (default for Jump)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
-
-        // Apply gravity
-        velocity.y += gravity * Time.deltaTime;
-
-        // Move the character based on the velocity
-        characterController.Move(velocity * Time.deltaTime);
-
-        // Optional: Rotate the character towards the movement direction
-        if (move != Vector3.zero)
-        {
-            Quaternion toRotation = Quaternion.LookRotation(move, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 720 * Time.deltaTime);
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce); // Apply the jump force
         }
     }
 }
