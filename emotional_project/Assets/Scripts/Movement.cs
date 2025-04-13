@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class Movement : MonoBehaviour
 {
     public float speed = 5f; // Speed of the character
     public float jumpForce = 5f; // Force applied when the character jumps
@@ -46,7 +46,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void UpdateAnimator()
     {
-        // This sets isJumping to false when the character is grounded
-        animator.SetBool("isJumping", !isGrounded); // Set to true if not grounded
+        // Update animator parameters based on states
+        animator.SetBool("isJumping", !isGrounded);
     }
 }
+
